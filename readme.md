@@ -2,14 +2,6 @@
 
 This repository contains adaptive steering experiments for multimodal reasoning models, including generation, evaluation, embedding extraction, and analysis scripts.
 
-## Directory Layout
-- `scripts/`: Common run scripts
-- `Data/Questions/`: Question datasets (JSONL)
-- `Data/Images/MathV/`: Corresponding image data
-- `Data/Representation/`: Embeddings and intermediate representations
-- `Data/Eval/`: Evaluation outputs and statistics
-- `Assets/`: Visualization/resources
-
 ## Quick Start
 
 ### 1) Generate main results
