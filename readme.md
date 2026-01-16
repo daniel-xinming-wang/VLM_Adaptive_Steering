@@ -25,7 +25,6 @@ Run the following script to generate embeddings:
 ```bash
 bash scripts/embed.sh
 ```
-You can pass a dataset name (e.g., `MathVMini` or `MATH500`).
 
 ### 3) Extract steering vectors
 Run the following script to extract the steering vector:
