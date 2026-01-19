@@ -113,7 +113,6 @@ def generate_and_evaluate(
     outputs_dir="",        # path to the MATH-V repo's outputs/ (e.g., "/path/to/MATH-V/outputs")
     run_name="Qwen3VL_Thinking_8B",  # filename for predictions JSONL (outputs/<run_name>.jsonl)
     enforce_eager=True,   # Set True to disable torch.compile/cudagraph for debug prints
-    cot_style="verbose",  # "verbose" or "concise"
 ):    
     # Disable v1 multiprocessing to keep the model in-process for debugging.
     # os.environ["VLLM_ENABLE_V1_MULTIPROCESSING"] = "0"
@@ -171,9 +170,6 @@ def generate_and_evaluate(
         raise RuntimeError('Loaded processor does not support apply_chat_template.')
     if not getattr(processor, 'chat_template', None) and getattr(tokenizer, 'chat_template', None):
         processor.chat_template = tokenizer.chat_template
-    cot_style = (cot_style or "verbose").lower()
-    if cot_style not in {"verbose", "concise"}:
-        raise ValueError(f"Unsupported cot_style={cot_style}; choose verbose/concise")
 
     template_jinja = """\
     This is the problem:
@@ -353,30 +349,16 @@ def generate_and_evaluate(
 
         prompt_temp = prompt_template.render(prompt=problem, options_block=options_block)
 
-        if cot_style == "concise":
-            if options_block:
-                system_content = (
-                    "In <think>, use symbols/abbreviations (math notation when appropriate) with minimal English; keep it as short as possible. "
-                    "Choose the correct option among "
-                    "A, B, C, D, and E, and put the chosen letter as your final "
-                    "answer within \\boxed{}."
-                )
-            else:
-                system_content = (
-                    "In <think>, use symbols/abbreviations (math notation when appropriate) with minimal English; keep it as short as possible. "
-                    "Put your final answer within \\boxed{}."
-                )
+        if options_block:
+            system_content = (
+                "Please reason step by step. Choose the correct option among "
+                "A, B, C, D, and E, and put the chosen letter as your final "
+                "answer within \\boxed{}."
+            )
         else:
-            if options_block:
-                system_content = (
-                    "Please reason step by step. Choose the correct option among "
-                    "A, B, C, D, and E, and put the chosen letter as your final "
-                    "answer within \\boxed{}."
-                )
-            else:
-                system_content = (
-                    "Please reason step by step, and put your final answer within \\boxed{}."
-                )
+            system_content = (
+                "Please reason step by step, and put your final answer within \\boxed{}."
+            )
 
 
         # Collect PIL images and stable UUIDs based on source paths
