@@ -12,7 +12,7 @@ NUM_LAYERS = 36
 DIRECTION = "a_minus_b"  # "a_minus_b" or "b_minus_a"
 
 # %%
-OUT_DIR = "/Users/xinmingwang/Library/CloudStorage/OneDrive-NationalUniversityofSingapore/Next/Multi-Modal/Data/Representation/Diff_image_vs_no_image"
+OUT_DIR = "Data/Representation/Diff_image_vs_no_image"
 
 
 
@@ -262,7 +262,7 @@ import os
 import re
 import numpy as np
 
-root = "/Users/xinmingwang/Library/CloudStorage/OneDrive-NationalUniversityofSingapore/Next/Multi-Modal/Data/Representation/MathV/Qwen3-VL-4B-Thinking"
+root = "Data/Representation/MathV/Qwen3-VL-4B-Thinking"
 
 def layer_idx(path):
     m = re.search(r"embeds_(\d+)\.npy$", path)
